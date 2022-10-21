@@ -56,17 +56,23 @@ class ImageEventHandlerImpl : public ImageEventHandler
     ros::Time image_stamp;
     // if the last event stamp is 0, no end of exposure event was received, assign the image arrival
     // time instead
-    if (last_event_stamp.toSec() == 0.0)
-    {
-      image_stamp = image_arrival_time;
-      ROS_WARN(
-          "Blackfly Nodelet: No event stamp on camera %s, assigning image arrival time instead",
-          m_cam_name.c_str());
-    }
-    else
-    {
-      image_stamp = last_event_stamp;
-    }
+
+    uint64_t timestamp_ns = image->GetTimeStamp();
+    #define NS_IN_S 1000000000
+    image_stamp = ros::Time(timestamp_ns / NS_IN_S, timestamp_ns % NS_IN_S);
+    ROS_INFO("Timestamp: %i %i", image_stamp.sec, image_stamp.nsec);
+
+    // if (last_event_stamp.toSec() == 0.0)
+    // {
+    //   image_stamp = image_arrival_time;
+    //   ROS_WARN(
+    //       "Blackfly Nodelet: No event stamp on camera %s, assigning image arrival time instead",
+    //       m_cam_name.c_str());
+    // }
+    // else
+    // {
+    //   image_stamp = last_event_stamp;
+    // }
     if (image->IsIncomplete())
     {
       ROS_ERROR("Blackfly Nodelet: Image retrieval failed: image incomplete for %s", m_cam_name.c_str());
