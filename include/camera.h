@@ -191,10 +191,6 @@ class blackfly_camera
       //Gustav: enable 1588
       m_cam_ptr->GevIEEE1588 = true;
       m_cam_ptr->GevIEEE1588Mode.SetValue(GevIEEE1588ModeEnums::GevIEEE1588Mode_SlaveOnly);
-      m_cam_ptr->Width = 1148;
-      m_cam_ptr->Height = 900;
-      m_cam_ptr->OffsetX = 76;
-      m_cam_ptr->OffsetY = 60;
 
       // Set up pixel format
       if (m_cam_settings.mono)
